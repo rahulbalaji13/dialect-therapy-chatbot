@@ -23,6 +23,14 @@ socketio = SocketIO(app, cors_allowed_origins=Config.CORS_ORIGINS)
 
 os.makedirs('tmp_audio', exist_ok=True)
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        "status": "online",
+        "message": "Welcome to Dialect Therapy Chatbot API!",
+        "endpoints": ["/health", "/sessions", "/analyze", "/live-session"]
+    }), 200
+
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "healthy"}), 200
