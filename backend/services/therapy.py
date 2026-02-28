@@ -34,7 +34,7 @@ def generate_therapy(transcript: str, dialect: str, fluency_score: float, detect
 
     try:
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": "You must output strictly raw JSON."},
                 {"role": "user", "content": prompt}
@@ -44,18 +44,20 @@ def generate_therapy(transcript: str, dialect: str, fluency_score: float, detect
         )
         data = response.choices[0].message.content
         
-        # Clean potential markdown backticks that some models still inject
-        if data.startswith("```json"):
-            data = data.replace("```json", "", 1)
-        if data.startswith("```"):
-            data = data.replace("```", "", 1)
-        if data.endswith("```"):
-            data = data[::-1].replace("```", "", 1)[::-1]
+        # Foolproof JSON extraction: Find the first '{' and last '}'
+        start_idx = data.find('{')
+        end_idx = data.rfind('}')
+        
+        if start_idx != -1 and end_idx != -1:
+            clean_json = data[start_idx:end_idx+1]
+            return json.loads(clean_json)
+        else:
+            raise ValueError("No valid JSON object found in response.")
             
-        return json.loads(data.strip())
     except Exception as e:
+        print(f"Raw response from Groq: {data if 'data' in locals() else 'None'}")
         print(f"Error in therapy generation: {e}")
         return {
             "exercises": [],
-            "feedback": "Error generating therapy plan."
+            "feedback": f"Error generating therapy plan: {str(e)}"
         }
