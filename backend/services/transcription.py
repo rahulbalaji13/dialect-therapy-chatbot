@@ -2,8 +2,11 @@ import os
 from openai import OpenAI
 from config import Config
 
-# Initialize OpenAI Client
-client = OpenAI(api_key=Config.OPENAI_API_KEY)
+# Initialize Groq Client
+client = OpenAI(
+    api_key=Config.GROQ_API_KEY,
+    base_url="https://api.groq.com/openai/v1"
+)
 
 def transcribe_audio(file_path: str, dialect: str) -> str:
     """
@@ -15,7 +18,7 @@ def transcribe_audio(file_path: str, dialect: str) -> str:
     try:
         with open(file_path, "rb") as audio_file:
             transcript = client.audio.transcriptions.create(
-                model="whisper-1", 
+                model="whisper-large-v3", 
                 file=audio_file,
                 prompt=system_prompt,
                 response_format="text"
