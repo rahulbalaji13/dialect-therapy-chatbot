@@ -2,11 +2,14 @@ import json
 from openai import OpenAI
 from config import Config
 
-client = OpenAI(api_key=Config.OPENAI_API_KEY)
+client = OpenAI(
+    api_key=Config.GROQ_API_KEY,
+    base_url="https://api.groq.com/openai/v1"
+)
 
 def generate_therapy(transcript: str, dialect: str, fluency_score: float, detected_patterns: list) -> dict:
     """
-    Generate structured personalized therapy using GPT-4o-mini
+    Generate structured personalized therapy using Groq's Llama3
     """
     prompt = f"""
     You are an expert AI speech therapist specializing in Tamil dialects.
@@ -31,7 +34,7 @@ def generate_therapy(transcript: str, dialect: str, fluency_score: float, detect
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="llama3-8b-8192",
             messages=[
                 {"role": "system", "content": "Return only raw JSON based on the user's instructions."},
                 {"role": "user", "content": prompt}
