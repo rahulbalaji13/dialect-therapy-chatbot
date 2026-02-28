@@ -11,3 +11,4 @@ python-dotenv==1.0.1
 Werkzeug==3.0.1
 eventlet==0.35.1
 Flask-Cors==4.0.0
+gTTS==2.5.1
