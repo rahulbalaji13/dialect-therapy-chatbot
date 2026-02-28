@@ -7,7 +7,8 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard-to-guess-string'
     SUPABASE_URL = os.environ.get('SUPABASE_URL')
     SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
-    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+    GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
+    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') # Keeping just in case
     HUGGINGFACE_API_KEY = os.environ.get('HUGGINGFACE_API_KEY')
     # Allowed CORS Origins
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
