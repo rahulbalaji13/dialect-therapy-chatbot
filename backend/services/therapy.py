@@ -34,7 +34,7 @@ def generate_therapy(transcript: str, dialect: str, fluency_score: float, detect
 
     try:
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": "You must output strictly raw JSON."},
                 {"role": "user", "content": prompt}
